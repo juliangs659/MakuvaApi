@@ -13,8 +13,11 @@ export class Resenia {
   @Prop({ required: true })
   comentario: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Ruta', required: true })
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Ruta', required: false })
   ruta: string;
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'PuntoInteres', required: false })
+  puntoInteres?: string;
 }
 
 export const ReseniaSchema = SchemaFactory.createForClass(Resenia);

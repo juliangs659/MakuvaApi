@@ -1,4 +1,4 @@
-import { IsMongoId, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateReseniaDto {
   @IsMongoId()
@@ -14,6 +14,10 @@ export class CreateReseniaDto {
   comentario: string;
 
   @IsMongoId()
-  @IsNotEmpty()
-  ruta: string;
+  @IsOptional()
+  ruta?: string;
+
+  @IsMongoId()
+  @IsOptional()
+  puntoInteres?: string;
 }
