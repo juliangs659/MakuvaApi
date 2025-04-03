@@ -8,8 +8,12 @@ export class ReseniaController {
   constructor(private readonly reseniaService: ReseniaService) {}
 
   @Post()
-  create(@Body() createReseniaDto: CreateReseniaDto) {
-    return this.reseniaService.create(createReseniaDto);
+  async create(@Body() createReseniaDto: CreateReseniaDto) {
+    const resenia = await this.reseniaService.create(createReseniaDto);
+    return {
+      message: 'Resenia created successfully',
+      resenia,
+    };
   }
 
   @Get()

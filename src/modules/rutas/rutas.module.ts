@@ -15,5 +15,6 @@ import { UsuariosModule } from '../usuarios/usuarios.module';
   ],
   controllers: [RutasController],
   providers: [RutasService],
+  exports: [MongooseModule],
 })
 export class RutasModule {}

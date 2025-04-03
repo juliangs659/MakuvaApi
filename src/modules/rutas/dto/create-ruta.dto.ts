@@ -21,6 +21,10 @@ export class CreateRutaDto {
   @IsNotEmpty()
   usuarioCreador: string;
 
+  @IsMongoId()
+  @IsNotEmpty()
+  resenia: string;
+
   @IsString()
   @IsNotEmpty()
   imagen: string;

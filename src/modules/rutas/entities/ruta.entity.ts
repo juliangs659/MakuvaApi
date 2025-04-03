@@ -20,6 +20,9 @@ export class Ruta {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Usuario', required: true })
   usuarioCreador: string;
 
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Resenia' }] })
+  resenias: string[];
+
   @Prop({ required: true })
   imagen: string;
 
