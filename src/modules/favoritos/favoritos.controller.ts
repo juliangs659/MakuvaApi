@@ -8,8 +8,12 @@ export class FavoritosController {
   constructor(private readonly favoritosService: FavoritosService) {}
 
   @Post()
-  create(@Body() createFavoritoDto: CreateFavoritoDto) {
-    return this.favoritosService.create(createFavoritoDto);
+  async create(@Body() createFavoritoDto: CreateFavoritoDto) {
+    const favorito = await this.favoritosService.create(createFavoritoDto);
+    return {
+      message: 'Favorito created successfully',
+      favorito,
+    };
   }
 
   @Get()

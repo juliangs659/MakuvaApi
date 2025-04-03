@@ -8,6 +8,7 @@ import { ReseniaModule } from './modules/resenia/resenia.module';
 import { PuntoInteresModule } from './modules/punto-interes/punto-interes.module';
 import { UbicacionModule } from './modules/ubicacion/ubicacion.module';
 import { MapaModule } from './modules/mapa/mapa.module';
+import { FavoritosModule } from './modules/favoritos/favoritos.module';
 
 const DB_NAME = process.env.APIDB_DB;
 const URL_MONGO = process.env.MONGODB_BD as string + DB_NAME; 
@@ -21,6 +22,7 @@ const URL_MONGO = process.env.MONGODB_BD as string + DB_NAME;
     PuntoInteresModule,
     UbicacionModule,
     MapaModule,
+    FavoritosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Schema as MongooseSchema } from "mongoose";
+import { CategoriaPuntoInteres } from "../enums/categoria-punto-interes";
 
 export type PuntoInteresDocument = HydratedDocument<PuntoInteres>;
 
@@ -15,8 +16,8 @@ export class PuntoInteres {
   @Prop({ type: String, required: true })
   ubicacion: string;
 
-  @Prop({ type: String, required: true })
-  categoria: string;
+  @Prop({ type: String, enum: CategoriaPuntoInteres, required: true })
+  categoria: CategoriaPuntoInteres;
 
   @Prop()
   likes: number;
