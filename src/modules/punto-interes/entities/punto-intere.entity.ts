@@ -6,7 +6,7 @@ export type PuntoIntereDocument = HydratedDocument<PuntoIntere>;
 @Schema({ timestamps: true })
 export class PuntoIntere {
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, unique: true })
   nombre: string;
 
   @Prop({ type: String, required: true })
