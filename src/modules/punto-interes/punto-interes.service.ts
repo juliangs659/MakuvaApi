@@ -2,19 +2,19 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePuntoIntereDto } from './dto/create-punto-intere.dto';
 import { UpdatePuntoIntereDto } from './dto/update-punto-intere.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { PuntoIntere } from './entities/punto-intere.entity';
+import { PuntoInteres } from './entities/punto-interes.entity';
 import { Model } from 'mongoose';
 import { Ruta } from '../rutas/entities/ruta.entity';
 
 @Injectable()
 export class PuntoInteresService {
   constructor(
-    @InjectModel(PuntoIntere.name) private readonly puntoIntereModel: Model<PuntoIntere>,
+    @InjectModel(PuntoInteres.name) private readonly puntoIntereModel: Model<PuntoInteres>,
     @InjectModel(Ruta.name) private readonly rutaModel: Model<Ruta>,
   ) {}
 
 
-  async create(createPuntoIntereDto: CreatePuntoIntereDto): Promise<PuntoIntere> {
+  async create(createPuntoIntereDto: CreatePuntoIntereDto): Promise<PuntoInteres> {
     const nuevoPuntoIntere = new this.puntoIntereModel(createPuntoIntereDto);
     const puntoIntereCreado = await nuevoPuntoIntere.save();
 

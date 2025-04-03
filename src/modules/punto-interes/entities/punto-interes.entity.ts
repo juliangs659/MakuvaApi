@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Schema as MongooseSchema } from "mongoose";
 
-export type PuntoIntereDocument = HydratedDocument<PuntoIntere>;
+export type PuntoInteresDocument = HydratedDocument<PuntoInteres>;
 
 @Schema({ timestamps: true })
-export class PuntoIntere {
+export class PuntoInteres {
 
   @Prop({ type: String, required: true, unique: true })
   nombre: string;
@@ -31,4 +31,4 @@ export class PuntoIntere {
   ruta: string;
 }
 
-export const PuntoIntereSchema = SchemaFactory.createForClass(PuntoIntere);
+export const PuntoInteresSchema = SchemaFactory.createForClass(PuntoInteres);
