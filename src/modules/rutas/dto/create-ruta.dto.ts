@@ -21,33 +21,34 @@ export class CreateRutaDto {
   @IsNotEmpty()
   usuarioCreador: string;
 
-  @IsMongoId()
-  @IsNotEmpty()
-  resenia: string;
-
+  @IsMongoId({ each: true }) // Valida que cada elemento sea un ID válido de MongoDB
+  @IsOptional()
+  resenias?: string[];
+  
+  @IsMongoId({ each: true }) // Valida que cada elemento sea un ID válido de MongoDB
+  @IsOptional()
+  puntosInteres?: string[];
+  
   @IsString()
   @IsNotEmpty()
   imagen: string;
 
   @IsNumber()
-  @IsNotEmpty()
-  likes: number;
+  @IsOptional()
+  likes?: number;
 
   @IsNumber()
-  @IsNotEmpty()
-  dislikes: number;
+  @IsOptional()
+  dislikes?: number;
 
   @IsNumber()
-  @IsNotEmpty()
-  visitas: number;
+  @IsOptional()
+  visitas?: number;
 
   @IsMongoId()
   @IsOptional()
   ubicacion?: string;
 
-  @IsMongoId()
-  @IsOptional()
-  puntosInteres?: string;
 
   @IsNumber()
   @IsNotEmpty()
