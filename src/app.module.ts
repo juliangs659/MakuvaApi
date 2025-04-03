@@ -6,6 +6,7 @@ import { UsuariosModule } from './modules/usuarios/usuarios.module';
 import { RutasModule } from './modules/rutas/rutas.module';
 import { ReseniaModule } from './modules/resenia/resenia.module';
 import { PuntoInteresModule } from './modules/punto-interes/punto-interes.module';
+import { UbicacionModule } from './modules/ubicacion/ubicacion.module';
 
 const DB_NAME = process.env.APIDB_DB;
 const URL_MONGO = process.env.MONGODB_BD as string + DB_NAME; 
@@ -17,6 +18,7 @@ const URL_MONGO = process.env.MONGODB_BD as string + DB_NAME;
     RutasModule,
     ReseniaModule,
     PuntoInteresModule,
+    UbicacionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

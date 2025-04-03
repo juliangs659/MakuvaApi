@@ -25,9 +25,13 @@ export class CreateRutaDto {
   @IsOptional()
   resenias?: string[];
   
-  @IsMongoId({ each: true }) // Valida que cada elemento sea un ID válido de MongoDB
+  @IsMongoId({ each: true }) 
   @IsOptional()
   puntosInteres?: string[];
+
+  @IsMongoId({ each: true }) 
+  @IsOptional()
+  ubicaciones?: string[];
   
   @IsString()
   @IsNotEmpty()
@@ -45,9 +49,6 @@ export class CreateRutaDto {
   @IsOptional()
   visitas?: number;
 
-  @IsMongoId()
-  @IsOptional()
-  ubicacion?: string;
 
 
   @IsNumber()

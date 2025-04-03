@@ -4,14 +4,14 @@ import { UpdateRutaDto } from './dto/update-ruta.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Ruta, RutaDocument } from './entities/ruta.entity';
-import { Usuario } from '../usuarios/entities/usuario.entity';
+import { Usuario, UsuarioDocument } from '../usuarios/entities/usuario.entity';
 import { Types } from 'mongoose';
 
 @Injectable()
 export class RutasService {
   constructor(
     @InjectModel(Ruta.name) private readonly rutaModel: Model<RutaDocument>,
-    @InjectModel(Usuario.name) private readonly usuarioModel: Model<Usuario>
+    @InjectModel(Usuario.name) private readonly usuarioModel: Model<UsuarioDocument>
   ) {}
 
   async create(createRutaDto: CreateRutaDto): Promise<RutaDocument> {

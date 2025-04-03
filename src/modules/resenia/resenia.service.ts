@@ -4,13 +4,13 @@ import { UpdateReseniaDto } from './dto/update-resenia.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Resenia, ReseniaDocument } from './entities/resenia.entity';
 import { Model } from 'mongoose';
-import { Ruta } from '../rutas/entities/ruta.entity';
+import { Ruta, RutaDocument } from '../rutas/entities/ruta.entity';
 
 @Injectable()
 export class ReseniaService {
   constructor(
     @InjectModel(Resenia.name) private readonly reseniaModel: Model<ReseniaDocument>,
-    @InjectModel(Ruta.name) private readonly rutaModel: Model<Ruta>,
+    @InjectModel(Ruta.name) private readonly rutaModel: Model<RutaDocument>,
   ) {}
 
   async create(createReseniaDto: CreateReseniaDto): Promise<ReseniaDocument> {

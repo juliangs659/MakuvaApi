@@ -26,6 +26,9 @@ export class Ruta {
   @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'PuntoInteres' }] })
   puntosInteres: string[];
 
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Ubicacion' }] })
+  ubicaciones: string[];
+
   @Prop({ required: true })
   imagen: string;
 
@@ -38,8 +41,6 @@ export class Ruta {
   @Prop({ required: true })
   visitas: number;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Ubicacion' })
-  ubicacion: string;
 
   @Prop({ required: true })
   tiempoEstimado: number;
