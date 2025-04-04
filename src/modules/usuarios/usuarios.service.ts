@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Usuario, UsuarioDocument } from './entities/usuario.entity';
@@ -17,15 +17,21 @@ export class UsuariosService {
     return usuario.save();
   }
 
-  findAll() {
-    return `This action returns all usuarios`;
+  async findAll() {
+    return this.usuarioModel.find().exec()
+      .then(usuarios => {
+        if (!usuarios || usuarios.length === 0) {
+          throw new Error('No se encontraron usuarios');
+        }
+        return usuarios;
+      });
   }
 
   async findOne(id: string): Promise<UsuarioDocument> {
     return this.usuarioModel.findById(id).exec()
       .then(usuario => {
         if (!usuario) {
-          throw new Error(`Usuario with id ${id} not found`);
+          throw new Error(`Usuario con el id ${id} no encontrado`);
         }
         return usuario;
       })
@@ -35,13 +41,17 @@ export class UsuariosService {
     return this.usuarioModel.findByIdAndUpdate(id, updateUsuarioDto, { new: true }).exec()
       .then(usuario => {
         if (!usuario) {
-          throw new Error(`Usuario with id ${id} not found`);
+          throw new Error(`Usuario con el id ${id} no encontrado`);
         }
         return usuario;
       });    
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(id: string): Promise<UsuarioDocument> {
+    const usuario = await this.usuarioModel.findByIdAndDelete(id).exec();
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con el id ${id} no encontrado`);
+    }
+    return usuario;
   }
 }

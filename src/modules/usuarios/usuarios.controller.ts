@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { Types } from 'mongoose';
+import { ValidateObjectIdPipe } from '../common/pipes/validar-object-id.pipe';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -11,32 +13,48 @@ export class UsuariosController {
   async create(@Body() createUsuarioDto: CreateUsuarioDto) {
     const usuario = await this.usuariosService.create(createUsuarioDto);
     return {
-      message: 'Usuario created successfully',
+      message: 'Usuario creado correctamente',
       usuario,
     };
   }
 
   @Get()
-  findAll() {
-    return this.usuariosService.findAll();
+  async findAll() {
+      const usuarios = await this.usuariosService.findAll();
+      return {
+        message: 'Usuarios encontrados',
+        usuarios,
+      };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usuariosService.findOne(id);
-  }
-
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    const usuario = await this.usuariosService.update(id, updateUsuarioDto);
+  async findOne(@Param('id', ValidateObjectIdPipe) id: string) {
+    const usuario = await this.usuariosService.findOne(id);
     return {
-      message: 'Usuario updated successfully',
+      message: 'Usuario encontrado',
       usuario,
     };
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usuariosService.remove(+id);
+  @Patch(':id')
+  async update(
+    @Param('id', ValidateObjectIdPipe) id: string, 
+    @Body() updateUsuarioDto: UpdateUsuarioDto
+  ) {
+    const usuario = await this.usuariosService.update(id, updateUsuarioDto);
+    return {
+      message: 'Usuario actualizado correctamente',
+      usuario,
+    };
+
   }
+
+  @Delete(':id')
+  async remove(@Param('id', ValidateObjectIdPipe) id: string) {
+    const usuario = await this.usuariosService.remove(id);
+    return {
+      message: 'Usuario eliminado correctamente',
+      usuario,
+    };
+  } 
 }
