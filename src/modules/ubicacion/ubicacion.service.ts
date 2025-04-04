@@ -30,19 +30,38 @@ export class UbicacionService {
 
   }
 
-  findAll() {
-    return `This action returns all ubicacion`;
+  async findAll() {
+    return this.ubicacionModel.find().exec()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ubicacion`;
+  async findOne(id: string): Promise<UbicacionDocument> {
+    const ubicacion = await this.ubicacionModel.findById(id).exec();
+    if (!ubicacion) {
+      throw new NotFoundException(`Ubicacion con el id ${id} no encontrada`);
+    }
+    return ubicacion;
   }
 
-  update(id: number, updateUbicacionDto: UpdateUbicacionDto) {
-    return `This action updates a #${id} ubicacion`;
+  async update(id: string, updateUbicacionDto: UpdateUbicacionDto): Promise<UbicacionDocument> {
+    const ubicacion = await this.ubicacionModel.findByIdAndUpdate(
+      id, 
+      updateUbicacionDto, 
+      { new: true })
+      .exec();
+    if (!ubicacion) {
+      throw new Error(`Ubicacion con el id ${id} no encontrada`);
+    }
+    return ubicacion;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ubicacion`;
+  async remove(id: string): Promise<UbicacionDocument> {
+    return this.ubicacionModel.findByIdAndDelete(id).exec()
+      .then(ubicacion => {
+        if (!ubicacion) {
+          throw new NotFoundException(`Ubicacion con el id ${id} no encontrada`);
+        }
+        return ubicacion;
+      });
+    
   }
 }

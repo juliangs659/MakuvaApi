@@ -20,11 +20,11 @@ export class UsuariosController {
 
   @Get()
   async findAll() {
-      const usuarios = await this.usuariosService.findAll();
-      return {
-        message: 'Usuarios encontrados',
-        usuarios,
-      };
+    const usuarios = await this.usuariosService.findAll();
+    return {
+      message: 'Usuarios encontrados',
+      usuarios,
+    };
   }
 
   @Get(':id')
@@ -41,12 +41,11 @@ export class UsuariosController {
     @Param('id', ValidateObjectIdPipe) id: string, 
     @Body() updateUsuarioDto: UpdateUsuarioDto
   ) {
-    const usuario = await this.usuariosService.update(id, updateUsuarioDto);
-    return {
-      message: 'Usuario actualizado correctamente',
-      usuario,
-    };
-
+      const usuario = await this.usuariosService.update(id, updateUsuarioDto);
+      return {
+        message: 'Usuario actualizado correctamente',
+        usuario,
+      };
   }
 
   @Delete(':id')

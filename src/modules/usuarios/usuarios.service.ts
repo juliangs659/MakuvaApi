@@ -17,34 +17,29 @@ export class UsuariosService {
     return usuario.save();
   }
 
-  async findAll() {
-    return this.usuarioModel.find().exec()
-      .then(usuarios => {
-        if (!usuarios || usuarios.length === 0) {
-          throw new Error('No se encontraron usuarios');
-        }
-        return usuarios;
-      });
+  async findAll(): Promise<UsuarioDocument[]> {
+    return this.usuarioModel.find().exec();
   }
+  
 
   async findOne(id: string): Promise<UsuarioDocument> {
-    return this.usuarioModel.findById(id).exec()
-      .then(usuario => {
-        if (!usuario) {
-          throw new Error(`Usuario con el id ${id} no encontrado`);
-        }
-        return usuario;
-      })
+    const usuario = await this.usuarioModel.findById(id).exec();
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con el id ${id} no encontrado`);
+    }
+    return usuario;
   }
 
   async update(id: string, updateUsuarioDto: UpdateUsuarioDto): Promise<UsuarioDocument> {
-    return this.usuarioModel.findByIdAndUpdate(id, updateUsuarioDto, { new: true }).exec()
-      .then(usuario => {
-        if (!usuario) {
-          throw new Error(`Usuario con el id ${id} no encontrado`);
-        }
-        return usuario;
-      });    
+    const usuario = await this.usuarioModel.findByIdAndUpdate(
+      id,
+      updateUsuarioDto,
+      { new: true },
+    ).exec();
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con el id ${id} no encontrado`);
+    }
+    return usuario;
   }
 
   async remove(id: string): Promise<UsuarioDocument> {

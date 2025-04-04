@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UbicacionService } from './ubicacion.service';
 import { CreateUbicacionDto } from './dto/create-ubicacion.dto';
 import { UpdateUbicacionDto } from './dto/update-ubicacion.dto';
+import { ValidateObjectIdPipe } from '../common/pipes/validar-object-id.pipe';
 
 @Controller('ubicacion')
 export class UbicacionController {
@@ -11,28 +12,47 @@ export class UbicacionController {
   async create(@Body() createUbicacionDto: CreateUbicacionDto) {
     const ubicacion = await this.ubicacionService.create(createUbicacionDto);
     return {
-      message: 'Ubicacion created successfully',
+      message: 'Ubicacion creada correctamente',
       ubicacion,
     };
   }
 
   @Get()
-  findAll() {
-    return this.ubicacionService.findAll();
+  async findAll() {
+    const ubicaciones = await this.ubicacionService.findAll();
+    return {
+      message: 'Ubicaciones Encontradas',
+      ubicaciones,
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ubicacionService.findOne(+id);
+  async findOne(@Param('id', ValidateObjectIdPipe) id: string) {
+    const ubicacion = await this.ubicacionService.findOne(id);
+    return {
+      message: 'Ubicacion encontrada',
+      ubicacion,
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUbicacionDto: UpdateUbicacionDto) {
-    return this.ubicacionService.update(+id, updateUbicacionDto);
+  async update(
+    @Param('id', ValidateObjectIdPipe) id: string, 
+    @Body() updateUbicacionDto: UpdateUbicacionDto) 
+    {
+      const ubicacion = await this.ubicacionService.update(id, updateUbicacionDto);
+      return {
+        message: 'Ubicacion actualizada correctamente',
+        ubicacion,
+      };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ubicacionService.remove(+id);
+  async remove(@Param('id', ValidateObjectIdPipe) id: string) {
+    const ubicacion = await this.ubicacionService.remove(id);
+    return {
+      message: 'Ubicacion eliminada correctamente',
+      ubicacion,
+    };
   }
 }
