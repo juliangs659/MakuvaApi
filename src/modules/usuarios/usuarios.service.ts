@@ -12,7 +12,7 @@ export class UsuariosService {
   ) {}
 
 
-  create(createUsuarioDto: CreateUsuarioDto): Promise<UsuarioDocument> {
+  async create(createUsuarioDto: CreateUsuarioDto): Promise<UsuarioDocument> {
     const usuario = new this.usuarioModel(createUsuarioDto);
     return usuario.save();
   }
@@ -21,7 +21,7 @@ export class UsuariosService {
     return `This action returns all usuarios`;
   }
 
-  findOne(id: string): Promise<UsuarioDocument> {
+  async findOne(id: string): Promise<UsuarioDocument> {
     return this.usuarioModel.findById(id).exec()
       .then(usuario => {
         if (!usuario) {
@@ -31,8 +31,14 @@ export class UsuariosService {
       })
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+  async update(id: string, updateUsuarioDto: UpdateUsuarioDto): Promise<UsuarioDocument> {
+    return this.usuarioModel.findByIdAndUpdate(id, updateUsuarioDto, { new: true }).exec()
+      .then(usuario => {
+        if (!usuario) {
+          throw new Error(`Usuario with id ${id} not found`);
+        }
+        return usuario;
+      });    
   }
 
   remove(id: number) {
