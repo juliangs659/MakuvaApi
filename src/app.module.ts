@@ -9,6 +9,7 @@ import { PuntoInteresModule } from './modules/punto-interes/punto-interes.module
 import { UbicacionModule } from './modules/ubicacion/ubicacion.module';
 import { MapaModule } from './modules/mapa/mapa.module';
 import { FavoritosModule } from './modules/favoritos/favoritos.module';
+import { ReportesModule } from './modules/reportes/reportes.module';
 
 const DB_NAME = process.env.APIDB_DB;
 const URL_MONGO = process.env.MONGODB_BD as string + DB_NAME; 
@@ -23,6 +24,7 @@ const URL_MONGO = process.env.MONGODB_BD as string + DB_NAME;
     UbicacionModule,
     MapaModule,
     FavoritosModule,
+    ReportesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
