@@ -2,33 +2,58 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ReportesService } from './reportes.service';
 import { CreateReporteDto } from './dto/create-reporte.dto';
 import { UpdateReporteDto } from './dto/update-reporte.dto';
+import { ValidateObjectIdPipe } from '../common/pipes/validar-object-id.pipe';
 
 @Controller('reportes')
 export class ReportesController {
   constructor(private readonly reportesService: ReportesService) {}
 
   @Post()
-  create(@Body() createReporteDto: CreateReporteDto) {
-    return this.reportesService.create(createReporteDto);
+  async create(@Body() createReporteDto: CreateReporteDto) {
+    const reporte = await this.reportesService.create(createReporteDto);
+    return {
+      message: 'Reporte creado correctamente',
+      reporte,
+    };
   }
 
   @Get()
-  findAll() {
-    return this.reportesService.findAll();
+  async findAll() {
+    const reportes = await this.reportesService.findAll();
+    return {
+      message: 'Reportes encontrados',
+      reportes,
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reportesService.findOne(+id);
+  async findOne(@Param('id', ValidateObjectIdPipe) id: string) {
+    const reporte = await this.reportesService.findOne(id);
+    return {
+      message: 'Reporte encontrado',
+      reporte,
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReporteDto: UpdateReporteDto) {
-    return this.reportesService.update(+id, updateReporteDto);
-  }
+  update(
+    @Param('id', ValidateObjectIdPipe) id: string, 
+    @Body() updateReporteDto: UpdateReporteDto
+  ) {
+      const reporte = this.reportesService.update(id, updateReporteDto);
+      return {
+        message: 'Reporte actualizado correctamente',
+        reporte,
+      };
+
+    }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reportesService.remove(+id);
+  remove(@Param('id', ValidateObjectIdPipe) id: string) {
+    const reporte = this.reportesService.remove(id);
+    return {
+      message: 'Reporte eliminado correctamente',
+      reporte,
+    };
   }
 }

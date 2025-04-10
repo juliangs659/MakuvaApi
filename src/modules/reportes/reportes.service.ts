@@ -1,26 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateReporteDto } from './dto/create-reporte.dto';
 import { UpdateReporteDto } from './dto/update-reporte.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Reporte, ReporteDocument } from './entities/reporte.entity';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class ReportesService {
-  create(createReporteDto: CreateReporteDto) {
-    return 'This action adds a new reporte';
+  constructor(
+    @InjectModel(Reporte.name) private readonly reporteModel: Model<ReporteDocument>
+  ) {}
+
+
+  async create(createReporteDto: CreateReporteDto): Promise<ReporteDocument> {
+    const reporte = await this.reporteModel.create(createReporteDto);
+    return reporte.save();
   }
 
-  findAll() {
-    return `This action returns all reportes`;
+  async findAll(): Promise<ReporteDocument[]> {
+    const reportes = await this.reporteModel.find().exec();
+    return reportes;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reporte`;
+  async findOne(id: string): Promise<ReporteDocument> {
+    const reporte = await this.reporteModel.findById(id).exec();
+    if (!reporte) {
+      throw new NotFoundException(`Reporte con el id ${id} no encontrado`);
+    }
+    return reporte;
   }
 
-  update(id: number, updateReporteDto: UpdateReporteDto) {
-    return `This action updates a #${id} reporte`;
+  async update(id: string, updateReporteDto: UpdateReporteDto): Promise<ReporteDocument> {
+    const reporte = await this.reporteModel.findByIdAndUpdate(
+      id,
+      updateReporteDto,
+      { new: true },
+    ).exec();
+    if (!reporte) {
+      throw new NotFoundException(`Reporte con el id ${id} no encontrado`);
+    }
+    return reporte;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reporte`;
+ async remove(id: string): Promise<ReporteDocument> {
+    const reporte = await this.reporteModel.findByIdAndDelete(id).exec();
+    if (!reporte) {
+      throw new NotFoundException(`Reporte con el id ${id} no encontrado`);
+    }
+    return reporte;
   }
 }
