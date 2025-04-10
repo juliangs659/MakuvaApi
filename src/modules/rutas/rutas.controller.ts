@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { RutasService } from './rutas.service';
 import { CreateRutaDto } from './dto/create-ruta.dto';
 import { UpdateRutaDto } from './dto/update-ruta.dto';
+import { ValidateObjectIdPipe } from '../common/pipes/validar-object-id.pipe';
 
 @Controller('rutas')
 export class RutasController {
@@ -17,22 +18,41 @@ export class RutasController {
   }
 
   @Get()
-  findAll() {
-    return this.rutasService.findAll();
+  async findAll() {
+    const rutas = await this.rutasService.findAll();
+    return {
+      message: 'Rutas encontradas',
+      rutas,
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.rutasService.findOne(+id);
+  async findOne(@Param('id', ValidateObjectIdPipe) id: string) {
+    const ruta = await this.rutasService.findOne(id);
+    return {
+      message: 'Ruta encontrada',
+      ruta,
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRutaDto: UpdateRutaDto) {
-    return this.rutasService.update(+id, updateRutaDto);
+  async update(
+    @Param('id') id: string, 
+    @Body() updateRutaDto: UpdateRutaDto
+  ) {
+      const ruta = await this.rutasService.update(id, updateRutaDto);
+      return {
+        message: 'Ruta actualizada correctamente',
+        ruta,
+      };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.rutasService.remove(+id);
+  async remove(@Param('id', ValidateObjectIdPipe) id: string) {
+    const ruta = await this.rutasService.remove(id);
+    return {
+      message: 'Ruta eliminada correctamente',
+      ruta,
+    };
   }
 }

@@ -5,7 +5,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Ruta, RutaDocument } from './entities/ruta.entity';
 import { Usuario, UsuarioDocument } from '../usuarios/entities/usuario.entity';
-import { Types } from 'mongoose';
 
 @Injectable()
 export class RutasService {
@@ -30,19 +29,36 @@ export class RutasService {
     return rutaCreada;
   }
 
-  findAll() {
-    return `This action returns all rutas`;
+  async findAll(): Promise<RutaDocument[]> {
+    return this.rutaModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ruta`;
+  async findOne(id: string): Promise<RutaDocument> {
+    const ruta = await this.rutaModel.findById(id).exec();
+    if (!ruta) {
+      throw new NotFoundException(`Ruta con el id ${id} no encontrada`);
+    }
+    return ruta;
   }
 
-  update(id: number, updateRutaDto: UpdateRutaDto) {
-    return `This action updates a #${id} ruta`;
+  async update(id: string, updateRutaDto: UpdateRutaDto) {
+    const ruta = await this.rutaModel.findByIdAndUpdate(
+      id,
+      updateRutaDto,
+      { new: true },
+    ).exec();
+    if (!ruta) {
+      throw new NotFoundException(`Ruta con el id ${id} no encontrada`);
+    }
+    return ruta;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ruta`;
+  async remove(id: string): Promise<RutaDocument> {
+    const ruta = await this.rutaModel.findByIdAndDelete(id).exec();
+    if (!ruta) {
+      throw new NotFoundException(`Ruta con el id ${id} no encontrada`);
+    }
+    return ruta;
+
   }
 }
