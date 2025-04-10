@@ -48,19 +48,44 @@ export class ReseniaService {
     return reseniaCreada;
   }
 
-  findAll() {
-    return `This action returns all resenia`;
+  async findAll(): Promise<ReseniaDocument[]> {
+    return this.reseniaModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} resenia`;
+  async findOne(id: string): Promise<ReseniaDocument> {
+    const resenia = await this.reseniaModel.findById(id).exec();
+    if (!resenia) {
+      throw new NotFoundException(`Resenia con el id ${id} no encontrada`);
+    }
+    return resenia;
   }
 
-  update(id: number, updateReseniaDto: UpdateReseniaDto) {
-    return `This action updates a #${id} resenia`;
+  async findByUserId(userId: string): Promise<ReseniaDocument[]> {
+    const resenias = await this.reseniaModel.find({ usuarioCreador: userId }).exec();
+    if (!resenias || resenias.length === 0) {
+      throw new NotFoundException(`No se encontraron reseñas para el usuario con id ${userId}`);
+    }
+    return resenias;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} resenia`;
+  async update(id: string, updateReseniaDto: UpdateReseniaDto): Promise<ReseniaDocument> {
+    const resenia = await this.reseniaModel.findByIdAndUpdate(
+      id,
+      updateReseniaDto,
+      { new: true },
+    ).exec();
+    if (!resenia) {
+      throw new NotFoundException(`Resenia con el id ${id} no encontrada`);
+    }
+    return resenia;
+
+  }
+
+  async remove(id: string): Promise<ReseniaDocument> {
+    const resenia = await this.reseniaModel.findByIdAndDelete(id).exec();
+    if (!resenia) {
+      throw new NotFoundException(`Resenia con el id ${id} no encontrada`);
+    }
+    return resenia;
   }
 }
