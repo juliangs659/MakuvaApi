@@ -30,19 +30,32 @@ export class PuntoInteresService {
     return puntoIntereCreado;
   }
 
-  findAll() {
-    return `This action returns all puntoInteres`;
+  async findAll() {
+    const puntosInteres = await this.puntoIntereModel.find().exec();
+    return puntosInteres;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} puntoIntere`;
+  async findOne(id: string): Promise<PuntoInteresDocument> {
+    const puntoIntere = await this.puntoIntereModel.findById(id).exec();
+    if (!puntoIntere) {
+      throw new NotFoundException(`Punto de interés con el id ${id} no encontrado`);
+    }
+    return puntoIntere;
   }
 
-  update(id: number, updatePuntoIntereDto: UpdatePuntoIntereDto) {
-    return `This action updates a #${id} puntoIntere`;
+  async update(id: string, updatePuntoIntereDto: UpdatePuntoIntereDto): Promise<PuntoInteresDocument> {
+    const puntoIntere = await this.puntoIntereModel.findByIdAndUpdate(id, updatePuntoIntereDto, { new: true }).exec();
+    if (!puntoIntere) {
+      throw new NotFoundException(`Punto de interés con el id ${id} no encontrado`);
+    }
+    return puntoIntere;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} puntoIntere`;
+  async remove(id: string): Promise<PuntoInteresDocument> {
+    const puntoIntere = await this.puntoIntereModel.findByIdAndDelete(id).exec();
+    if (!puntoIntere) {
+      throw new NotFoundException(`Punto de interés con el id ${id} no encontrado`);
+    }
+    return puntoIntere;
   }
 }
