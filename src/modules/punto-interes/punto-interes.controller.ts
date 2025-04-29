@@ -18,8 +18,12 @@ export class PuntoInteresController {
   }
 
   @Get()
-  findAll() {
-    return this.puntoInteresService.findAll();
+  async findAll() {
+    const puntosInteres = await this.puntoInteresService.findAll();
+    return {
+      message: 'Puntos de interes encontrados',
+      puntosInteres
+    }
   }
 
   @Get(':id')
@@ -33,7 +37,7 @@ export class PuntoInteresController {
 
   @Patch(':id')
   async update(
-    @Param('id') id: string, 
+    @Param('id', ValidateObjectIdPipe) id: string, 
     @Body() updatePuntoIntereDto: UpdatePuntoIntereDto
   ) {
     const puntosInteres = await this.puntoInteresService.update(id, updatePuntoIntereDto);

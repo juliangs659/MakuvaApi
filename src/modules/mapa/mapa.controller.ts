@@ -28,7 +28,7 @@ export class MapaController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ValidateObjectIdPipe) id: string) {
     const mapa = await this.mapaService.findOne(id);
     if (!mapa) {
       return {
