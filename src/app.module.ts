@@ -26,6 +26,7 @@ const URL_MONGO = process.env.MONGODB_BD as string + DB_NAME;
     FavoritosModule,
     ReportesModule,
     MapaModule,
+    FavoritosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

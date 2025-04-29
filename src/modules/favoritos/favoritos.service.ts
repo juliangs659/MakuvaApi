@@ -25,19 +25,36 @@ export class FavoritosService {
     return nuevoFavorito.save();
   }
 
-  findAll() {
-    return `This action returns all favoritos`;
+ async findAll(): Promise<FavoritoDocument[]> {
+    const favoritos = await this.favoritoModel.find().exec();
+    return favoritos;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} favorito`;
+  async findOne(id: string): Promise<FavoritoDocument> {
+    const favorito = await this.favoritoModel.findById(id).exec();
+    if (!favorito) {
+      throw new Error(`Favorito con el id ${id} no encontrado`);
+    }
+    return favorito;
   }
 
-  update(id: number, updateFavoritoDto: UpdateFavoritoDto) {
-    return `This action updates a #${id} favorito`;
+  async update(id: string, updateFavoritoDto: UpdateFavoritoDto): Promise<FavoritoDocument> {
+    const favorito = await this.favoritoModel.findByIdAndUpdate(
+      id,
+      updateFavoritoDto,
+      { new: true },
+    ).exec();
+    if (!favorito) {
+      throw new Error(`Favorito con el id ${id} no encontrado`);
+    }
+    return favorito;  
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} favorito`;
+  async remove(id: string): Promise<FavoritoDocument> {
+    const favorito = await this.favoritoModel.findByIdAndDelete(id).exec();
+    if (!favorito) {
+      throw new Error(`Favorito con el id ${id} no encontrado`);
+    }
+    return favorito;
   }
 }

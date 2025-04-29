@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { FavoritosService } from './favoritos.service';
 import { CreateFavoritoDto } from './dto/create-favorito.dto';
 import { UpdateFavoritoDto } from './dto/update-favorito.dto';
+import { ValidateObjectIdPipe } from '../common/pipes/validar-object-id.pipe';
 
 @Controller('favoritos')
 export class FavoritosController {
@@ -11,28 +12,61 @@ export class FavoritosController {
   async create(@Body() createFavoritoDto: CreateFavoritoDto) {
     const favorito = await this.favoritosService.create(createFavoritoDto);
     return {
-      message: 'Favorito created successfully',
+      message: 'Favorito creado correctamente',
       favorito,
     };
   }
 
   @Get()
-  findAll() {
-    return this.favoritosService.findAll();
+  async findAll() {
+    const favoritos = await this.favoritosService.findAll();
+    return {
+      message: 'Favoritos encontrado',
+      favoritos,
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.favoritosService.findOne(+id);
+  async findOne(@Param('id', ValidateObjectIdPipe) id: string) {
+    const favorito = await this.favoritosService.findOne(id);
+    if (!favorito) {
+      return {
+        message: 'Favorito no encontrado',
+      };
+    }
+    return {
+      message: 'Favorito encontrado',
+      favorito,
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFavoritoDto: UpdateFavoritoDto) {
-    return this.favoritosService.update(+id, updateFavoritoDto);
+  async update(
+    @Param('id', ValidateObjectIdPipe) id: string, 
+    @Body() updateFavoritoDto: UpdateFavoritoDto) {
+    const favorito = await this.favoritosService.update(id, updateFavoritoDto);
+    if (!favorito) {
+      return {
+        message: 'Favorito no encontrado',
+      };
+    }
+    return {
+      message: 'Favorito actualizado correctamente',
+      favorito,
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.favoritosService.remove(+id);
+  async remove(@Param('id', ValidateObjectIdPipe) id: string) {
+    const favorito = await this.favoritosService.remove(id);
+    if (!favorito) {
+      return {
+        message: 'Favorito no encontrado',
+      };
+    }
+    return {
+      message: 'Favorito eliminado correctamente',
+      favorito,
+    };
   }
 }
