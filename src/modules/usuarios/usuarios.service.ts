@@ -11,6 +11,11 @@ export class UsuariosService {
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<UsuarioDocument>,
   ) {}
 
+  // contar usuarios registrados
+  async contarUsuarios(): Promise<number> {
+    return this.usuarioModel.countDocuments().exec();
+  }
+
 
   async create(createUsuarioDto: CreateUsuarioDto): Promise<UsuarioDocument> {
     const usuario = new this.usuarioModel(createUsuarioDto);

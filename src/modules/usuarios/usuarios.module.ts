@@ -13,6 +13,6 @@ import { Usuario, UsuarioSchema } from './entities/usuario.entity';
   ],
   controllers: [UsuariosController],
   providers: [UsuariosService],
-  exports: [MongooseModule],
+  exports: [MongooseModule, UsuariosService], // Exporta el módulo y el servicio para que puedan ser utilizados en otros módulos
 })
 export class UsuariosModule {}

@@ -13,6 +13,11 @@ export class RutasService {
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<UsuarioDocument>
   ) {}
 
+  // contar rutas registradas
+  async contarRutas(): Promise<number> {
+    return this.rutaModel.countDocuments().exec();
+  }
+
   async create(createRutaDto: CreateRutaDto): Promise<RutaDocument> {
     const nuevaRuta = new this.rutaModel(createRutaDto);
     const rutaCreada = await nuevaRuta.save();

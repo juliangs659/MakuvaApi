@@ -13,9 +13,18 @@ export class EstadisticasController {
   }
 
   @Get()
-  findAll() {
-    return this.estadisticasService.findAll();
+  async obtenerEstadisticas() {
+    const estadisticas = await this.estadisticasService.obtenerEstadisticas();
+    return {
+      message: 'Estadisticas obtenidas correctamente',
+      estadisticas,
+    };
   }
+
+  // @Get()
+  // findAll() {
+  //   return this.estadisticasService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
