@@ -11,14 +11,18 @@ export class CreatePuntoIntereDto {
   @IsNotEmpty()
   descripcion: string;
   
+<<<<<<< HEAD
 
   @IsString()
+=======
+  @IsMongoId()
+>>>>>>> bce0b63d95b0d8b329167c92618177b4b2367491
   @IsNotEmpty()
   ubicacion: string;
   
   @IsEnum(CategoriaPuntoInteres)
   @IsNotEmpty()
-  categoria: string;
+  categoria: CategoriaPuntoInteres;
   
   @IsNumber()
   @IsNotEmpty()

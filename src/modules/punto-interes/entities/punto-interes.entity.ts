@@ -13,7 +13,7 @@ export class PuntoInteres {
   @Prop({ type: String, required: true })
   descripcion: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: MongooseSchema.Types.ObjectId, required: true })
   ubicacion: string;
 
   @Prop({ type: String, enum: CategoriaPuntoInteres, required: true })

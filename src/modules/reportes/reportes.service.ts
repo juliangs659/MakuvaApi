@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class ReportesService {
+<<<<<<< HEAD
   constructor(
     @InjectModel(Reporte.name) private readonly reporteModel: Model<ReporteDocument>
   ) {}
@@ -18,6 +19,20 @@ export class ReportesService {
   }
 
   async findAll(): Promise<ReporteDocument[]> {
+=======
+ 
+  constructor(
+    @InjectModel(Reporte.name) private readonly reporteModel: Model<ReporteDocument>,
+  ) {}
+  
+  
+  async create(createReporteDto: CreateReporteDto): Promise<ReporteDocument> {
+    const nuevoReporte = await this.reporteModel.create(createReporteDto);
+    return nuevoReporte
+  }
+
+  async findAll() {
+>>>>>>> bce0b63d95b0d8b329167c92618177b4b2367491
     const reportes = await this.reporteModel.find().exec();
     return reportes;
   }
@@ -25,7 +40,11 @@ export class ReportesService {
   async findOne(id: string): Promise<ReporteDocument> {
     const reporte = await this.reporteModel.findById(id).exec();
     if (!reporte) {
+<<<<<<< HEAD
       throw new NotFoundException(`Reporte con el id ${id} no encontrado`);
+=======
+      throw new Error(`Reporte con el id ${id} no encontrado`);
+>>>>>>> bce0b63d95b0d8b329167c92618177b4b2367491
     }
     return reporte;
   }
@@ -37,15 +56,26 @@ export class ReportesService {
       { new: true },
     ).exec();
     if (!reporte) {
+<<<<<<< HEAD
       throw new NotFoundException(`Reporte con el id ${id} no encontrado`);
+=======
+      throw new Error(`Reporte con el id ${id} no encontrado`);
+>>>>>>> bce0b63d95b0d8b329167c92618177b4b2367491
     }
     return reporte;
   }
 
+<<<<<<< HEAD
  async remove(id: string): Promise<ReporteDocument> {
     const reporte = await this.reporteModel.findByIdAndDelete(id).exec();
     if (!reporte) {
       throw new NotFoundException(`Reporte con el id ${id} no encontrado`);
+=======
+  async remove(id: string): Promise<ReporteDocument> {
+    const reporte = await this.reporteModel.findByIdAndDelete(id).exec();
+    if (!reporte) {
+      throw new Error(`Reporte con el id ${id} no encontrado`);
+>>>>>>> bce0b63d95b0d8b329167c92618177b4b2367491
     }
     return reporte;
   }

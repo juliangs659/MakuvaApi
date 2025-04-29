@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PuntoInteresService } from './punto-interes.service';
 import { CreatePuntoIntereDto } from './dto/create-punto-intere.dto';
 import { UpdatePuntoIntereDto } from './dto/update-punto-intere.dto';
+import { ValidateObjectIdPipe } from '../common/pipes/validar-object-id.pipe';
 
 @Controller('punto-interes')
 export class PuntoInteresController {
@@ -22,17 +23,32 @@ export class PuntoInteresController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.puntoInteresService.findOne(+id);
+  async findOne(@Param('id', ValidateObjectIdPipe) id: string) {
+    const puntoInteres = await this.puntoInteresService.findOne(id);
+    return {
+      message: 'Punto de interes encontrado',
+      puntoInteres
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePuntoIntereDto: UpdatePuntoIntereDto) {
-    return this.puntoInteresService.update(+id, updatePuntoIntereDto);
+  async update(
+    @Param('id') id: string, 
+    @Body() updatePuntoIntereDto: UpdatePuntoIntereDto
+  ) {
+    const puntosInteres = await this.puntoInteresService.update(id, updatePuntoIntereDto);
+    return {
+      message: 'Punto de Interes actualizado',
+      puntosInteres
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.puntoInteresService.remove(+id);
+  async remove(@Param('id', ValidateObjectIdPipe) id: string) {
+    const puntoInteres = await this.puntoInteresService.remove(id);
+    return {
+      message: "Punto de Interes eliminado con exito",
+      puntoInteres
+    }
   }
 }
