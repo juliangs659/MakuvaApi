@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMapaDto } from './dto/create-mapa.dto';
 import { UpdateMapaDto } from './dto/update-mapa.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -17,19 +17,37 @@ export class MapaService {
     return await nuevoMapa.save();
   }
 
-  findAll() {
-    return `This action returns all mapa`;
+  async findAll(): Promise<MapaDocument[]> {
+    const mapas = await this.mapaModel.find().exec();
+    return mapas;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} mapa`;
+  async findOne(id: string): Promise<MapaDocument> {
+    const mapa = await this.mapaModel.findById(id).exec();
+    if (!mapa) {
+      throw new NotFoundException(`Mapa con el id ${id} no encontrado`);
+    }
+    return mapa;
+  }
+  
+
+  async update(id: string, updateMapaDto: UpdateMapaDto): Promise<MapaDocument> {
+    const mapa = await this.mapaModel.findByIdAndUpdate(
+      id, 
+      updateMapaDto, 
+      { new: true }
+    ).exec();
+    if (!mapa) {
+      throw new NotFoundException(`Mapa con el id ${id} no encontrado`);
+    }
+    return mapa;
   }
 
-  update(id: number, updateMapaDto: UpdateMapaDto) {
-    return `This action updates a #${id} mapa`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} mapa`;
+  async remove(id: string): Promise<MapaDocument> {
+    const mapa = await this.mapaModel.findByIdAndDelete(id).exec();
+    if (!mapa) {
+      throw new NotFoundException(`Mapa con el id ${id} no encontrado`);
+    }
+    return mapa;
   }
 }

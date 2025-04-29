@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { MapaService } from './mapa.service';
 import { CreateMapaDto } from './dto/create-mapa.dto';
 import { UpdateMapaDto } from './dto/update-mapa.dto';
+import { ValidateObjectIdPipe } from '../common/pipes/validar-object-id.pipe';
 
 @Controller('mapa')
 export class MapaController {
@@ -17,22 +18,57 @@ export class MapaController {
   }
 
   @Get()
-  findAll() {
-    return this.mapaService.findAll();
+  async findAll() {
+    const mapas = await this.mapaService.findAll();
+    return {
+      message: 'Mapas found',
+      mapas,
+    };
+
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mapaService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const mapa = await this.mapaService.findOne(id);
+    if (!mapa) {
+      return {
+        message: 'Mapa no encontrado',
+      };
+    }
+    return {
+      message: 'Mapa encontrado',
+      mapa,
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMapaDto: UpdateMapaDto) {
-    return this.mapaService.update(+id, updateMapaDto);
+  async update(
+    @Param('id', ValidateObjectIdPipe) id: string, 
+    @Body() updateMapaDto: UpdateMapaDto) 
+    {
+    const mapa = await this.mapaService.update(id, updateMapaDto);
+    if (!mapa) {
+      return {
+        message: 'Mapa no encontrado',
+      };
+    }
+    return {
+      message: 'Mapa actualizado correctamente',
+      mapa,
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.mapaService.remove(+id);
+  async remove(@Param('id', ValidateObjectIdPipe) id: string) {
+    const mapa = await this.mapaService.remove(id);
+    if (!mapa) {
+      return {
+        message: 'Mapa no encontrado',
+      };
+    }
+    return {
+      message: 'Mapa eliminado correctamente',
+      mapa,
+    };
   }
 }
