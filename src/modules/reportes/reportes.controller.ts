@@ -29,14 +29,11 @@ export class ReportesController {
   @Get(':id')
   async findOne(@Param('id', ValidateObjectIdPipe) id: string) {
     const reporte = await this.reportesService.findOne(id);
-<<<<<<< HEAD
-=======
     if (!reporte) {
       return {
         message: 'Reporte no encontrado',
       };
     }
->>>>>>> bce0b63d95b0d8b329167c92618177b4b2367491
     return {
       message: 'Reporte encontrado',
       reporte,
@@ -44,23 +41,6 @@ export class ReportesController {
   }
 
   @Patch(':id')
-<<<<<<< HEAD
-  update(
-    @Param('id', ValidateObjectIdPipe) id: string, 
-    @Body() updateReporteDto: UpdateReporteDto
-  ) {
-      const reporte = this.reportesService.update(id, updateReporteDto);
-      return {
-        message: 'Reporte actualizado correctamente',
-        reporte,
-      };
-
-    }
-
-  @Delete(':id')
-  remove(@Param('id', ValidateObjectIdPipe) id: string) {
-    const reporte = this.reportesService.remove(id);
-=======
   async update(
     @Param('id', ValidateObjectIdPipe) id: string, 
     @Body() updateReporteDto: UpdateReporteDto
@@ -85,7 +65,6 @@ export class ReportesController {
         message: 'Reporte no encontrado',
       };
     }
->>>>>>> bce0b63d95b0d8b329167c92618177b4b2367491
     return {
       message: 'Reporte eliminado correctamente',
       reporte,
