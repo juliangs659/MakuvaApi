@@ -12,6 +12,8 @@ export class CreatePuntoIntereDto {
   descripcion: string;
   
 
+  @IsString()
+  @IsNotEmpty()
   ubicacion: string;
   
   @IsEnum(CategoriaPuntoInteres)
